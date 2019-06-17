@@ -1,0 +1,15 @@
+#buttons {
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+}
+
+.btn {
+    padding: 5px;
+    margin-left: 10px;
+}
+
+#response {
+    margin-top: 50px;
+    font-size: 15pt;
+}
