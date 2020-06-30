@@ -24,14 +24,50 @@ export class AppComponent {
             0 == u && response(resp), u++
 
         })
-    }
+    } 
+    
+        
+    LoopStartedRSC: boolean = false;
+    ReaderStillConnectedLoop() {
 
+		let _this = this;
+        
+        if(_this.LoopStartedRSC == false)
+        {
+        _this.LoopStartedRSC = true;
+        let loop = setInterval(function() {
+
+            _this.uFRequest("ReaderStillConnected", function(uFResponse: any) {
+          
+                if (uFResponse.Connected == "0x00") {
+                     _this.ReaderOpen();
+                } else {
+                    
+                }
+            });
+        }, 200);
+        }
+
+    }
+    OpenText: string = 'Reader closed';
     //ReaderOpen example function
     ReaderOpen() {
+        let _this = this;
         this.uFRequest("ReaderOpen", function(uFResponse: any) {
+          
             console.log(uFResponse);
             let responseString = JSON.stringify(uFResponse);
-            alert(responseString);
+           
+     
+            if (uFResponse.Status == "[0x00 (0)] UFR_OK")
+            {
+             _this.OpenText = "Reader opened";
+               _this.ReaderStillConnectedLoop();    
+            }
+            else
+            {
+            _this.OpenText = "Reader closed";
+            }
         });
     }
 
@@ -59,7 +95,7 @@ export class AppComponent {
 	LoopStarted: boolean = false;
 		
     GetCardIdExLoop() {
-
+            
 		let _this = this;
         this.LoopResponseText = 'No Card';
         let loop = setInterval(function() {
@@ -76,4 +112,5 @@ export class AppComponent {
 
 
     }
+
 }
